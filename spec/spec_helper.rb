@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
-require "x25519"
+require "x25519-termux"
 require "support/provider_examples"
 require "coveralls"
 

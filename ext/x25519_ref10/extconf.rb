@@ -3,8 +3,12 @@
 # rubocop:disable Style/GlobalVars
 
 require "mkmf"
+require 'pkg-config'
 
-$CFLAGS << " -Wall -O3 -pedantic -std=c99"
+require_relative '../extconf_helpers'
+
+add_cflags '-Wall -O3 -pedantic -std=c99'
+
 
 create_makefile "x25519_ref10"
 

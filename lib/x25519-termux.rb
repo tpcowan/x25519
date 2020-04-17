@@ -2,15 +2,23 @@
 
 require "securerandom"
 
-require "x25519/version"
+require "x25519-termux/version"
 
-require "x25519/montgomery_u"
-require "x25519/scalar"
-require "x25519/test_vectors"
+require "x25519-termux/montgomery_u"
+require "x25519-termux/scalar"
+require "x25519-termux/test_vectors"
 
 # Native extension backends
 require "x25519_ref10"
-require "x25519_precomputed"
+begin
+  require "x25519_precomputed"
+rescue LoadError
+  $stderr.puts "x25519 Precomputed extension not installed"
+  module X25519::Provider::Precomputed
+    def self.available?; false; end
+  end
+end
+
 
 # The X25519 elliptic curve Diffie-Hellman algorithm
 module X25519
