@@ -3,7 +3,6 @@
 # rubocop:disable Style/GlobalVars
 
 require "mkmf"
-require 'pkg-config'
 
 require_relative '../extconf_helpers'
 
