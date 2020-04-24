@@ -6,11 +6,15 @@ require "rake/clean"
 CLEAN.include("**/*.o", "**/*.so", "**/*.bundle", "pkg", "tmp")
 
 require "rake/extensiontask"
-%w[precomputed ref10].each do |provider|
-  Rake::ExtensionTask.new("x25519_#{provider}") do |ext|
-    ext.ext_dir = "ext/x25519_#{provider}"
-  end
+Rake::ExtensionTask.new("x25519_ref10") do |ext|
+  ext.ext_dir = "ext/x25519_ref10"
 end
+
+# unless ARGV.include? '--disable-preccomputed'
+#   Rake::ExtensionTask.new("x25519_precomputed") do |ext|
+#     ext.ext_dir = "ext/x25519_precomputed"
+#   end
+# end
 
 require "rspec/core/rake_task"
 RSpec::Core::RakeTask.new
