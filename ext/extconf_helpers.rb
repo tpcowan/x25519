@@ -9,7 +9,7 @@ def add_cflags flags
       puts 'OK'
       true
     else
-      puts "\rC compiler does not acccept #{flags}"
+      puts "\rC compiler does not accept #{flags}"
       false
     end
   end

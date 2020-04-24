@@ -10,15 +10,7 @@ require "x25519-termux/test_vectors"
 
 # Native extension backends
 require "x25519_ref10"
-begin
-  require "x25519_precomputed"
-rescue LoadError
-  $stderr.puts "x25519 Precomputed extension not installed"
-  module X25519::Provider::Precomputed
-    def self.available?; false; end
-  end
-end
-
+require "x25519_precomputed"
 
 # The X25519 elliptic curve Diffie-Hellman algorithm
 module X25519

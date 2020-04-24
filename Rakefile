@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require "bundler/gem_tasks"
-
 require "rake/clean"
+
 CLEAN.include("**/*.o", "**/*.so", "**/*.bundle", "pkg", "tmp")
 
 require "rake/extensiontask"

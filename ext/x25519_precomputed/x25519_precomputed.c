@@ -13,6 +13,7 @@ static VALUE mX25519_Provider_Precomputed = Qnil;
 static VALUE mX25519_Provider_Precomputed_scalarmult(VALUE self, VALUE scalar, VALUE montgomery_u);
 static VALUE mX25519_Provider_Precomputed_scalarmult_base(VALUE self, VALUE scalar);
 static VALUE mX25519_is_available(VALUE self);
+static VALUE mX25519_disabled(VALUE self);
 
 /* Initialize the x25519_precomputed C extension */
 void Init_x25519_precomputed()
@@ -21,9 +22,13 @@ void Init_x25519_precomputed()
     mX25519_Provider = rb_define_module_under(mX25519, "Provider");
     mX25519_Provider_Precomputed = rb_define_module_under(mX25519_Provider, "Precomputed");
 
-    rb_define_singleton_method(mX25519_Provider_Precomputed, "scalarmult", mX25519_Provider_Precomputed_scalarmult, 2);
-    rb_define_singleton_method(mX25519_Provider_Precomputed, "scalarmult_base", mX25519_Provider_Precomputed_scalarmult_base, 1);
-    rb_define_singleton_method(mX25519_Provider_Precomputed, "available?", mX25519_is_available, 0);
+    #ifdef DISABLE_PRECOMPUTED
+      rb_define_singleton_method(mX25519_Provider_Precomputed, "available?", mX25519_disabled, 0);
+    #else
+      rb_define_singleton_method(mX25519_Provider_Precomputed, "scalarmult", mX25519_Provider_Precomputed_scalarmult, 2);
+      rb_define_singleton_method(mX25519_Provider_Precomputed, "scalarmult_base", mX25519_Provider_Precomputed_scalarmult_base, 1);
+      rb_define_singleton_method(mX25519_Provider_Precomputed, "available?", mX25519_is_available, 0);
+    #endif
 }
 
 /* Variable-base scalar multiplication */
@@ -85,4 +90,10 @@ static VALUE mX25519_Provider_Precomputed_scalarmult_base(VALUE self, VALUE scal
 static VALUE mX25519_is_available(VALUE self)
 {
     return check_4th_gen_intel_core_features() ? Qtrue : Qfalse;
+}
+
+/* Set availability to return false if extension is skipped */
+static VALUE mX25519_disabled(VALUE self)
+{
+    return Qfalse;
 }
